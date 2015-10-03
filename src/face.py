@@ -145,8 +145,12 @@ class face:
         points = []
         td = outDir*toolrad
         if self.htabct == 0:
-            points.append([start[0]+td, start[1]+td])
-            points.append([end[0]+td, end[1]-td])
+            if self.htabtype == TABS:
+                points.append([start[0]+td-outDir*self.thickness, start[1]+td])
+                points.append([end[0]+td-outDir*self.thickness, end[1]-td])
+            else:
+                points.append([start[0]+td, start[1]+td])
+                points.append([end[0]+td, end[1]-td])
         else:
             if self.htabtype == TABS:
                 x = start[0]-outDir*self.thickness+td
@@ -199,8 +203,12 @@ class face:
         points = []
         td = outDir*toolrad
         if self.wtabct == 0:
-            points.append([start[0]-td, start[1]+td])
-            points.append([end[0]+td, end[1]+td])
+            if self.wtabtype == TABS:
+                points.append([start[0]-td, start[1]+td-outDir*self.thickness])
+                points.append([end[0]+td, end[1]+td-outDir*self.thickness])
+            else:
+                points.append([start[0]-td, start[1]+td])
+                points.append([end[0]+td, end[1]+td])
         else:
             if self.wtabtype == TABS:
                 y = start[1]-outDir*self.thickness+td
