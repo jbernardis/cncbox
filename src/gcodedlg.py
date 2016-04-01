@@ -478,11 +478,11 @@ class GCodeDlg(wx.Dialog):
 			gcode.append(("; New circle - center (" + self.fmt + "," + self.fmt + ") radius " + self.fmt + "(" + self.fmt +")")
 						 % (self.normalX(c[0][0]), self.normalY(c[0][1]), c[1], crad))
 			gcode.append(("G0 X" + self.fmt + " Y" + self.fmt + self.addSpeedTerm("G0XY")) 
-						% (self.normalX(c[0][0]), self.normalY(c[0][0] - crad)))
+						% (self.normalX(c[0][0]), self.normalY(c[0][1] - crad)))
 			for p in steps:
 				gcode.append(("G1 Z" + self.fmt + self.addSpeedTerm("G1Z")) % p)
 				gcode.append((cmd+" J" + self.fmt + " X" + self.fmt + " Y" + self.fmt + self.addSpeedTerm("G1XY"))
-						% (crad, self.normalX(c[0][0]), self.normalY(c[0][1])))
+						% (crad, self.normalX(c[0][0]), self.normalY(c[0][1]) - crad))
 			
 			gcode.append(("G0 Z" + self.fmt + self.addSpeedTerm("G0Z")) % self.safeZ)
 			
