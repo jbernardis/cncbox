@@ -60,6 +60,7 @@ class MainFrame(wx.Frame):
 		wx.Frame.__init__(self, None, size=(700, 2000), title=TITLE, style=wx.TAB_TRAVERSAL+wx.DEFAULT_FRAME_STYLE)
 		self.Bind(wx.EVT_CLOSE, self.onClose)
 		self.SetBackgroundColour("white")
+		self.Show()
 		
 		self.fileName = None
 		
@@ -371,7 +372,7 @@ class MainFrame(wx.Frame):
 		sizer.AddSpacer((20, 20))
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
-		vsizer.AddSpacer((20,100))
+		vsizer.AddSpacer((120,100))
 		self.rbTop = wx.RadioButton(self, wx.ID_ANY, " Top ", style = wx.RB_GROUP )
 		self.rbBottom = wx.RadioButton(self, wx.ID_ANY, " Bottom " )
 		self.rbLeft = wx.RadioButton(self, wx.ID_ANY, " Left " )
