@@ -461,10 +461,12 @@ class GCodeDlg(wx.Dialog):
 			
 		steps = []
 		d = self.depthPerCut
-		while d < totalDepth:
+		while totalDepth - d > 0.0001: 
+			print "appending for depth ", -d
 			steps.append(-d)
 			d += self.depthPerCut
 		steps.append(-(totalDepth + self.extraDepth))
+		print "append final depth ", -(totalDepth + self.extraDepth)
 		
 		if icw:
 			cmd = "G2"
@@ -519,8 +521,15 @@ class GCodeDlg(wx.Dialog):
 		gcode.append(("G0 X" + self.fmt + " Y" + self.fmt + self.addSpeedTerm("G0XY")) 
 					% (self.normalX(data[0][0]), self.normalY(data[0][1])))
 		
-		for p in steps:
+		for i in len(steps):
+			p = steps[i]
 			gcode.append(("; layer at depth "+DEPTHFORMAT) % p)
+			pts = self.bx.render(ft, self.toolrad, i >= (len(steps)-2))[0]
+			if ocw:
+				data = pts
+			else:
+				data = pts[::-1]
+
 			gcode.append(("G1 Z" + self.fmt + self.addSpeedTerm("G1Z")) % p)
 			for d in range(1, len(data)):
 				gcode.append(("G1 X" + self.fmt + " Y" + self.fmt + self.addSpeedTerm("G1XY")) 
