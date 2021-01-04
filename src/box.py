@@ -1,6 +1,6 @@
 import face
 
-import ConfigParser
+import configparser
 
 CORNER_FRONT_SIDE = 0
 CORNER_FRONT_TOP = 1
@@ -121,28 +121,28 @@ class box:
 					try:
 						w = float(v)
 					except:
-						print "invalid value in box file for width"
+						print("invalid value in box file for width")
 						w = 100
 					self.setWidth(w)
 				elif n == 'height':
 					try:
 						h = float(v)
 					except:
-						print "invalid value in box file for height"
+						print("invalid value in box file for height")
 						h = 100
 					self.setHeight(h)
 				elif n == 'depth':
 					try:
 						d = float(v)
 					except:
-						print "invalid value in box file for depth"
+						print("invalid value in box file for depth")
 						d = 100
 					self.setDepth(d)
 				elif n == 'wall':
 					try:
 						w = float(v)
 					except:
-						print "invalid value in box file for wall"
+						print("invalid value in box file for wall")
 						w = 6
 					self.setWall(w, toolrad)
 
@@ -150,7 +150,7 @@ class box:
 					try:
 						exec("s=%s" % v)
 					except:
-						print "invalid value in box file for tabcount"
+						print("invalid value in box file for tabcount")
 						s = [0, 0, 0]
 					for c in cornerTypes:
 						self.setTabCount(c, s[c])
@@ -158,7 +158,7 @@ class box:
 					try:
 						exec("s=%s" % v)
 					except:
-						print "invalid value in box file for tablength"
+						print("invalid value in box file for tablength")
 						s = [10, 10, 10]
 					for c in cornerTypes:
 						self.setTabLen(c, s[c])
@@ -166,7 +166,7 @@ class box:
 					try:
 						exec("s=%s" % v)
 					except:
-						print "invalid value in box file for tabtype"
+						print("invalid value in box file for tabtype")
 						s = [0, 0, 0]
 					for c in cornerTypes:
 						self.setTabType(c, s[c])
@@ -174,11 +174,11 @@ class box:
 					try:
 						r = int(v)
 					except:
-						print "invalid value in box file for relief"
+						print("invalid value in box file for relief")
 						r = NRELIEF
 					self.setRelief(r)
 				else:
-					print "Unknown parameter: %s" % n
+					print("Unknown parameter: %s" % n)
 		
 		section = "blindtabs"
 		if config.has_section(section):
@@ -207,14 +207,14 @@ class box:
 					rads = config.get(section, "radii")
 					exec("rad=%s" % rads)
 				except:
-					print "Unable to process section %s" % section
+					print("Unable to process section %s" % section)
 					continue
 				
 				lx = len(cx);
 				ly = len(cy)
 				lr = len(rad)
 				if lx != ly or ly != lr or lr != lx:
-					print "Invalid data for section %s" % section
+					print("Invalid data for section %s" % section)
 					continue
 				
 				c = []
@@ -239,7 +239,7 @@ class box:
 					lys = config.get(section, "height")
 					exec("ly=%s" % lys)
 				except:
-					print "Unable to process section %s" % section
+					print("Unable to process section %s" % section)
 					continue
 				
 				lencx = len(cx);
@@ -247,7 +247,7 @@ class box:
 				lenlx = len(lx)
 				lenly = len(ly)
 				if lencx != lency or lency != lenlx or lenlx != lenly:
-					print "Invalid data for section %s" % section
+					print("Invalid data for section %s" % section)
 					continue
 				
 				r = []
@@ -377,7 +377,7 @@ class box:
 			adj = [self.BlindTabs[FACE_RIGHT], self.BlindTabs[FACE_BACK], self.BlindTabs[FACE_LEFT], self.BlindTabs[FACE_FRONT]]
 		elif faceType == FACE_LEFT:
 			adj = [self.BlindTabs[FACE_BOTTOM], self.BlindTabs[FACE_BACK], self.BlindTabs[FACE_TOP], self.BlindTabs[FACE_FRONT]]
-		elif faceType == FACE_LEFT:
+		elif faceType == FACE_RIGHT:
 			adj = [self.BlindTabs[FACE_TOP], self.BlindTabs[FACE_BACK], self.BlindTabs[FACE_BOTTOM], self.BlindTabs[FACE_FRONT]]
 		elif faceType == FACE_FRONT:
 			adj = [self.BlindTabs[FACE_LEFT], self.BlindTabs[FACE_TOP], self.BlindTabs[FACE_RIGHT], self.BlindTabs[FACE_BOTTOM]]
@@ -388,7 +388,7 @@ class box:
 			
 		self.currentFace = faceType 
 		
-		print "rendering face %d blind = %s" % (faceType, blindDepth)
+		print("rendering face %d blind = %s" % (faceType, blindDepth))
 		
 		return self.faces[faceType].render(toolrad, blindDepth, self.BlindTabs[faceType], adj)
 		

@@ -99,13 +99,13 @@ class face:
 	def render(self, toolrad, blindDepth, faceBlind, adjacentBlind):
 		
 		if faceBlind and not blindDepth:
-			print "Dig out entire slot area"
+			print("Dig out entire slot area")
 		elif faceBlind:
-			print "outline outside of slots"
+			print("outline outside of slots")
 		else:
-			print "normal slots - outline only"
+			print("normal slots - outline only")
 			
-		print "adjacency matrix: ", adjacentBlind
+		print("adjacency matrix: ", adjacentBlind)
 		sides = []
 		sides.append(self.renderHSide([-self.width/2.0, -self.height/2.0], [-self.width/2.0, self.height/2.0], -1, toolrad, blindDepth, faceBlind, adjacentBlind[0]))
 		sides.append(self.renderWSide([-self.width/2.0, self.height/2.0], [self.width/2.0, self.height/2.0], 1, toolrad, blindDepth, faceBlind, adjacentBlind[1]))

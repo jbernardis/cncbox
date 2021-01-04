@@ -1,6 +1,6 @@
 import os, wx
 import sys, inspect
-import ConfigParser
+import configparser
 
 cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0]))
 if cmd_folder not in sys.path:
@@ -29,7 +29,7 @@ class Settings:
 		self.boxDirectory = os.getcwd()
 		self.gcodeDirectory = os.getcwd()
 		
-		config = ConfigParser.SafeConfigParser()
+		config = configparser.ConfigParser()
 		config.read(FNSETTINGS)
 		if config.has_section(SECTION):
 			for n, v in config.items(SECTION):
@@ -39,12 +39,12 @@ class Settings:
 					self.gcodeDirectory = v
 		
 	def saveSettings(self):
-		config = ConfigParser.SafeConfigParser()
+		config = configparser.ConfigParser()
 		config.add_section(SECTION)
 		config.set(SECTION, 'boxdirectory', self.boxDirectory)
 		config.set(SECTION, 'gcodedirectory', self.gcodeDirectory)
 		
-		with open(FNSETTINGS, 'wb') as configfile:
+		with open(FNSETTINGS, 'w') as configfile:
 			config.write(configfile)
 
 class MainFrame(wx.Frame):
@@ -62,6 +62,10 @@ class MainFrame(wx.Frame):
 		self.SetBackgroundColour("white")
 		self.Show()
 		
+		self.Bind(wx.EVT_KEY_DOWN, self.keyDown)
+		self.Bind(wx.EVT_KEY_UP, self.keyUp)
+		self.Bind(wx.EVT_CHAR, self.keyChar)
+		
 		self.fileName = None
 		
 		self.currentFace = box.FACE_TOP
@@ -75,13 +79,13 @@ class MainFrame(wx.Frame):
 		self.images = Images(os.path.join(cmd_folder, "images"))
 		
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
-		sizer.AddSpacer((20, 20))
+		sizer.AddSpacer(20)
 		
 		ovsizer = wx.BoxSizer(wx.VERTICAL)
 		ohsizer = wx.BoxSizer(wx.HORIZONTAL)
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		
 		sbox = wx.StaticBox(self, -1, "Box Dimensions")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
@@ -93,11 +97,11 @@ class MainFrame(wx.Frame):
 		tc.Bind(wx.EVT_KILL_FOCUS, self.onTextHeight)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
-		hb.AddSpacer((30, 10))
+		hb.AddSpacer(30)
 		hb.Add(t, 0, wx.TOP|wx.LEFT, 10)
 		hb.Add(tc, 0, wx.TOP|wx.LEFT, 10)
 		staticboxsizer.Add(hb)
-		staticboxsizer.AddSpacer((305, 10))
+		staticboxsizer.AddSpacer(10)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Width: ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, DIMFORMAT % self.bx.Width, size=(70, -1), style=wx.TE_RIGHT)
@@ -106,11 +110,11 @@ class MainFrame(wx.Frame):
 		tc.Bind(wx.EVT_KILL_FOCUS, self.onTextWidth)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
-		hb.AddSpacer((30, 10))
+		hb.AddSpacer(30)
 		hb.Add(t, 0, wx.TOP|wx.LEFT, 10)
 		hb.Add(tc, 0, wx.TOP|wx.LEFT, 10)
 		staticboxsizer.Add(hb)
-		staticboxsizer.AddSpacer((305, 10))
+		staticboxsizer.AddSpacer(10)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Depth: ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, DIMFORMAT % self.bx.Depth, size=(70, -1), style=wx.TE_RIGHT)
@@ -119,14 +123,14 @@ class MainFrame(wx.Frame):
 		tc.Bind(wx.EVT_KILL_FOCUS, self.onTextDepth)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
-		hb.AddSpacer((30, 10))
+		hb.AddSpacer(30)
 		hb.Add(t, 0, wx.TOP|wx.LEFT, 10)
 		hb.Add(tc, 0, wx.TOP|wx.LEFT, 10)
 		staticboxsizer.Add(hb)
-		staticboxsizer.AddSpacer((305, 10))
+		staticboxsizer.AddSpacer(10)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Wall Thickness: ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, DIMFORMAT % self.bx.Wall, size=(70, -1), style=wx.TE_RIGHT)
@@ -135,11 +139,11 @@ class MainFrame(wx.Frame):
 		tc.Bind(wx.EVT_KILL_FOCUS, self.onTextWall)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
-		hb.AddSpacer((30, 10))
+		hb.AddSpacer(30)
 		hb.Add(t, 0, wx.TOP|wx.LEFT, 10)
 		hb.Add(tc, 0, wx.TOP|wx.LEFT, 10)
 		staticboxsizer.Add(hb)
-		staticboxsizer.AddSpacer((305, 10))
+		staticboxsizer.AddSpacer(10)
 			
 		sbox = wx.StaticBox(self, -1, "Tool Radius Relief")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
@@ -157,7 +161,7 @@ class MainFrame(wx.Frame):
 		self.Bind(wx.EVT_RADIOBUTTON, self.onNoRelief, self.rbRlfNone)
 		staticboxsizer.Add(hb)
 		
-		staticboxsizer.AddSpacer((305, 10))
+		staticboxsizer.AddSpacer(10)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
 		hb.Add(self.rbRlfHeight, 1, wx.TOP, 18)
@@ -165,14 +169,14 @@ class MainFrame(wx.Frame):
 		self.Bind(wx.EVT_RADIOBUTTON, self.onHRelief, self.rbRlfHeight)
 		staticboxsizer.Add(hb)
 		
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		hb = wx.BoxSizer(wx.HORIZONTAL)
 		hb.Add(self.rbRlfWidth, 1, wx.TOP, 18)
 		hb.Add(bmWRlf)
 		self.Bind(wx.EVT_RADIOBUTTON, self.onWRelief, self.rbRlfWidth)
 		staticboxsizer.Add(hb)
 		
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		t = wx.StaticText(self, wx.ID_ANY, "Tool Radius: ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, DIMFORMAT % self.toolrad, size=(70, -1), style=wx.TE_RIGHT)
 		self.tcToolRad = tc
@@ -180,20 +184,20 @@ class MainFrame(wx.Frame):
 		tc.Bind(wx.EVT_KILL_FOCUS, self.onTextToolRad)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
-		hb.AddSpacer((30, 10))
+		hb.AddSpacer(30)
 		hb.Add(t, 0, wx.TOP|wx.LEFT, 10)
 		hb.Add(tc, 0, wx.TOP|wx.LEFT, 10)
 		staticboxsizer.Add(hb)
 		
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		
 		ohsizer.Add(vsizer)
-		ohsizer.AddSpacer((20, 20))
+		ohsizer.AddSpacer(20)
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		
 		sbox = wx.StaticBox(self, -1, "Front/Back to Left/Right Joints")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
@@ -201,7 +205,7 @@ class MainFrame(wx.Frame):
 		self.rbFSTabs = wx.RadioButton(self, wx.ID_ANY, " Front/Back Tabs ", style = wx.RB_GROUP )
 		self.rbFSSlots = wx.RadioButton(self, wx.ID_ANY, " Front/Back Slots " )
 		staticboxsizer.Add(self.rbFSTabs)
-		staticboxsizer.AddSpacer((260, 1))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbFSSlots)
 		self.Bind(wx.EVT_RADIOBUTTON, self.onFSTabs, self.rbFSTabs)
 		self.Bind(wx.EVT_RADIOBUTTON, self.onFSSlots, self.rbFSSlots)
@@ -212,11 +216,11 @@ class MainFrame(wx.Frame):
 		sc.SetValue(0)
 		self.scFSCount = sc
 		sz = wx.BoxSizer(wx.HORIZONTAL)
-		sz.AddSpacer((20, 10))
+		sz.AddSpacer(20)
 		sz.Add(t, 1, wx.TOP, 3)
-		sz.AddSpacer((10, 10))
+		sz.AddSpacer(10)
 		sz.Add(sc)
-		staticboxsizer.AddSpacer((10, 5))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(sz)
 		self.Bind(wx.EVT_SPINCTRL, self.onSpinFSCount, sc)
 		
@@ -226,16 +230,16 @@ class MainFrame(wx.Frame):
 		sc.SetValue(10)
 		self.scFSLength = sc
 		sz = wx.BoxSizer(wx.HORIZONTAL)
-		sz.AddSpacer((20, 10))
+		sz.AddSpacer(20)
 		sz.Add(t, 1, wx.TOP, 3)
-		sz.AddSpacer((10, 10))
+		sz.AddSpacer(10)
 		sz.Add(sc)
-		staticboxsizer.AddSpacer((10, 5))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(sz)
 		self.Bind(wx.EVT_SPINCTRL, self.onSpinFSLength, sc)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		sbox = wx.StaticBox(self, -1, "Front/Back to Top/Bottom Joints")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
@@ -243,7 +247,7 @@ class MainFrame(wx.Frame):
 		self.rbFTBTabs = wx.RadioButton(self, wx.ID_ANY, " Front/Back Tabs ", style = wx.RB_GROUP )
 		self.rbFTBSlots = wx.RadioButton(self, wx.ID_ANY, " Front/Back Slots " )
 		staticboxsizer.Add(self.rbFTBTabs)
-		staticboxsizer.AddSpacer((260, 1))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbFTBSlots)
 		self.Bind(wx.EVT_RADIOBUTTON, self.onFTBTabs, self.rbFTBTabs)
 		self.Bind(wx.EVT_RADIOBUTTON, self.onFTBSlots, self.rbFTBSlots)
@@ -254,11 +258,11 @@ class MainFrame(wx.Frame):
 		sc.SetValue(0)
 		self.scFTBCount = sc
 		sz = wx.BoxSizer(wx.HORIZONTAL)
-		sz.AddSpacer((20, 10))
+		sz.AddSpacer(20)
 		sz.Add(t, 1, wx.TOP, 3)
-		sz.AddSpacer((10, 10))
+		sz.AddSpacer(10)
 		sz.Add(sc)
-		staticboxsizer.AddSpacer((10, 5))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(sz)
 		self.Bind(wx.EVT_SPINCTRL, self.onSpinFTBCount, sc)
 		
@@ -268,16 +272,16 @@ class MainFrame(wx.Frame):
 		sc.SetValue(10)
 		self.scFTBLength = sc
 		sz = wx.BoxSizer(wx.HORIZONTAL)
-		sz.AddSpacer((20, 10))
+		sz.AddSpacer(20)
 		sz.Add(t, 1, wx.TOP, 3)
-		sz.AddSpacer((10, 10))
+		sz.AddSpacer(10)
 		sz.Add(sc)
-		staticboxsizer.AddSpacer((10, 5))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(sz)
 		self.Bind(wx.EVT_SPINCTRL, self.onSpinFTBLength, sc)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		sbox = wx.StaticBox(self, -1, "Left/Right to Top/Bottom Joints")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
@@ -285,7 +289,7 @@ class MainFrame(wx.Frame):
 		self.rbSTBTabs = wx.RadioButton(self, wx.ID_ANY, " Left/Right Tabs ", style = wx.RB_GROUP )
 		self.rbSTBSlots = wx.RadioButton(self, wx.ID_ANY, " Left/Right Slots " )
 		staticboxsizer.Add(self.rbSTBTabs)
-		staticboxsizer.AddSpacer((260, 1))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbSTBSlots)
 		self.Bind(wx.EVT_RADIOBUTTON, self.onSTBTabs, self.rbSTBTabs)
 		self.Bind(wx.EVT_RADIOBUTTON, self.onSTBSlots, self.rbSTBSlots)
@@ -296,11 +300,11 @@ class MainFrame(wx.Frame):
 		sc.SetValue(0)
 		self.scSTBCount = sc
 		sz = wx.BoxSizer(wx.HORIZONTAL)
-		sz.AddSpacer((20, 10))
+		sz.AddSpacer(20)
 		sz.Add(t, 1, wx.TOP, 3)
-		sz.AddSpacer((10, 10))
+		sz.AddSpacer(10)
 		sz.Add(sc)
-		staticboxsizer.AddSpacer((10, 5))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(sz)
 		self.Bind(wx.EVT_SPINCTRL, self.onSpinSTBCount, sc)
 		
@@ -310,16 +314,16 @@ class MainFrame(wx.Frame):
 		sc.SetValue(10)
 		self.scSTBLength = sc
 		sz = wx.BoxSizer(wx.HORIZONTAL)
-		sz.AddSpacer((20, 10))
+		sz.AddSpacer(20)
 		sz.Add(t, 1, wx.TOP, 3)
-		sz.AddSpacer((10, 10))
+		sz.AddSpacer(10)
 		sz.Add(sc)
-		staticboxsizer.AddSpacer((10, 5))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(sz)
 		self.Bind(wx.EVT_SPINCTRL, self.onSpinSTBLength, sc)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		
 		
@@ -328,8 +332,8 @@ class MainFrame(wx.Frame):
 		v1sz = wx.BoxSizer(wx.VERTICAL)
 		v2sz = wx.BoxSizer(wx.VERTICAL)
 		
-		v1sz.AddSpacer((120, 1))
-		v2sz.AddSpacer((120, 1))
+		v1sz.AddSpacer(10)
+		v2sz.AddSpacer(10)
 
 		self.cbTopBlind = wx.CheckBox(self, wx.ID_ANY, " Top")
 		self.Bind(wx.EVT_CHECKBOX, self.onCheckBlind, self.cbTopBlind)
@@ -352,12 +356,12 @@ class MainFrame(wx.Frame):
 		self.Bind(wx.EVT_CHECKBOX, self.onCheckBlind, self.cbBackBlind)
 		v2sz.Add(self.cbBackBlind)
 		
-		staticboxsizer.AddSpacer((20, 1))
+		staticboxsizer.AddSpacer(20)
 		staticboxsizer.Add(v1sz)
 		staticboxsizer.Add(v2sz)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 	
 		ohsizer.Add(vsizer)
@@ -366,52 +370,52 @@ class MainFrame(wx.Frame):
 		btnSizer = wx.BoxSizer(wx.HORIZONTAL)
 		
 		self.bNew = wx.BitmapButton(self, wx.ID_ANY, self.images.pngNew, size=BUTTONDIM)
-		self.bNew.SetToolTipString("Create a new box")
+		self.bNew.SetToolTip("Create a new box")
 		btnSizer.Add(self.bNew, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.bNewPressed, self.bNew)
 		
 		self.bLoad = wx.BitmapButton(self, wx.ID_ANY, self.images.pngLoad, size=BUTTONDIM)
-		self.bLoad.SetToolTipString("Load box parameters")
+		self.bLoad.SetToolTip("Load box parameters")
 		btnSizer.Add(self.bLoad, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.bLoadPressed, self.bLoad)
 		
 		self.bSave = wx.BitmapButton(self, wx.ID_ANY, self.images.pngSave, size=BUTTONDIM)
-		self.bSave.SetToolTipString("Save box parameters")
+		self.bSave.SetToolTip("Save box parameters")
 		btnSizer.Add(self.bSave, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.bSavePressed, self.bSave)
 		
 		self.bSaveAs = wx.BitmapButton(self, wx.ID_ANY, self.images.pngSaveas, size=BUTTONDIM)
-		self.bSaveAs.SetToolTipString("Save as")
+		self.bSaveAs.SetToolTip("Save as")
 		btnSizer.Add(self.bSaveAs, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.bSaveAsPressed, self.bSaveAs)
 		
-		btnSizer.AddSpacer((30, 10))
+		btnSizer.AddSpacer(30)
 
 		self.bCircle = wx.BitmapButton(self, wx.ID_ANY, self.images.pngCircles, size=BUTTONDIM)
-		self.bCircle.SetToolTipString("Manage Circular Openings")
+		self.bCircle.SetToolTip("Manage Circular Openings")
 		btnSizer.Add(self.bCircle, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.bCirclePressed, self.bCircle)
 
 		self.bRects = wx.BitmapButton(self, wx.ID_ANY, self.images.pngRectangles, size=BUTTONDIM)
-		self.bRects.SetToolTipString("Manage Rectangular Openings")
+		self.bRects.SetToolTip("Manage Rectangular Openings")
 		btnSizer.Add(self.bRects, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.bRectanglePressed, self.bRects)
 		
-		btnSizer.AddSpacer((30, 10))
+		btnSizer.AddSpacer(30)
 
 		self.bGCode = wx.BitmapButton(self, wx.ID_ANY, self.images.pngGcode, size=BUTTONDIM)
-		self.bGCode.SetToolTipString("Generate G Code")
+		self.bGCode.SetToolTip("Generate G Code")
 		btnSizer.Add(self.bGCode, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.bGCodePressed, self.bGCode)
 
 		ovsizer.Add(btnSizer)
-		ovsizer.AddSpacer((10, 10))
+		ovsizer.AddSpacer(10)
 
 		sizer.Add(ovsizer)
-		sizer.AddSpacer((20, 20))
+		sizer.AddSpacer(20)
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
-		vsizer.AddSpacer((120,100))
+		vsizer.AddSpacer(100)
 		self.rbTop = wx.RadioButton(self, wx.ID_ANY, " Top ", style = wx.RB_GROUP )
 		self.rbBottom = wx.RadioButton(self, wx.ID_ANY, " Bottom " )
 		self.rbLeft = wx.RadioButton(self, wx.ID_ANY, " Left " )
@@ -419,15 +423,15 @@ class MainFrame(wx.Frame):
 		self.rbFront = wx.RadioButton(self, wx.ID_ANY, " Front " )
 		self.rbBack = wx.RadioButton(self, wx.ID_ANY, " Back " )
 		vsizer.Add(self.rbTop)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		vsizer.Add(self.rbBottom)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		vsizer.Add(self.rbLeft)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		vsizer.Add(self.rbRight)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		vsizer.Add(self.rbFront)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		vsizer.Add(self.rbBack)
 		self.Bind(wx.EVT_RADIOBUTTON, self.onFaceSelected, self.rbTop )
 		self.Bind(wx.EVT_RADIOBUTTON, self.onFaceSelected, self.rbBottom )
@@ -439,86 +443,96 @@ class MainFrame(wx.Frame):
 		sizer.Add(vsizer)
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		self.lblHiLite = wx.StaticText(self, wx.ID_ANY, " "*50, style=wx.ALIGN_CENTRE_HORIZONTAL)
 		vsizer.Add(self.lblHiLite,
 				flag=wx.ALIGN_CENTER_HORIZONTAL)
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 
 		self.gcf = GcFrame(self)
 		vsizer.Add(self.gcf)
 		
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		optsizer = wx.BoxSizer(wx.HORIZONTAL)
-		optsizer.AddSpacer((50, 10))
+		optsizer.AddSpacer(50)
 
 		self.cbGrid = wx.CheckBox(self, wx.ID_ANY, "Draw Grid")
 		optsizer.Add(self.cbGrid)
 		self.cbGrid.SetValue(True)
 		self.Bind(wx.EVT_CHECKBOX, self.onCbGrid, self.cbGrid)
-		optsizer.AddSpacer((10, 10))
+		optsizer.AddSpacer(10)
 
 		self.cbPath = wx.CheckBox(self, wx.ID_ANY, "Path Only")
 		optsizer.Add(self.cbPath)
 		self.cbPath.SetValue(False)
 		self.Bind(wx.EVT_CHECKBOX, self.onCbPath, self.cbPath)
-		optsizer.AddSpacer((10, 10))
+		optsizer.AddSpacer(10)
 		
 		vsizer.Add(optsizer)
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		sizer.Add(vsizer)
-		sizer.AddSpacer((10, 10))
+		sizer.AddSpacer(10)
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
-		vsizer.AddSpacer((50, 20))
+		vsizer.AddSpacer(20)
 		
 		self.bZoomIn = wx.BitmapButton(self, wx.ID_ANY, self.images.pngZoomin, size=BUTTONDIM)
-		self.bZoomIn.SetToolTipString("Zoom In")
+		self.bZoomIn.SetToolTip("Zoom In")
 		vsizer.Add(self.bZoomIn)
 		self.Bind(wx.EVT_BUTTON, self.bZoomInPressed, self.bZoomIn)
 
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		self.bZoomOut = wx.BitmapButton(self, wx.ID_ANY, self.images.pngZoomout, size=BUTTONDIM)
-		self.bZoomOut.SetToolTipString("Zoom Out")
+		self.bZoomOut.SetToolTip("Zoom Out")
 		vsizer.Add(self.bZoomOut)
 		self.Bind(wx.EVT_BUTTON, self.bZoomOutPressed, self.bZoomOut)
 
-		vsizer.AddSpacer((10, 30))
+		vsizer.AddSpacer(30)
 		
 		self.bhlForward = wx.BitmapButton(self, wx.ID_ANY, self.images.pngForward, size=BUTTONDIM)
-		self.bhlForward.SetToolTipString("HiLite Forward")
+		self.bhlForward.SetToolTip("HiLite Forward")
 		vsizer.Add(self.bhlForward)
 		self.Bind(wx.EVT_BUTTON, self.onHiLiteForward, self.bhlForward)
 
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		self.bhlBackward = wx.BitmapButton(self, wx.ID_ANY, self.images.pngBackward, size=BUTTONDIM)
-		self.bhlBackward.SetToolTipString("HiLite Backward")
+		self.bhlBackward.SetToolTip("HiLite Backward")
 		vsizer.Add(self.bhlBackward)
 		self.Bind(wx.EVT_BUTTON, self.onHiLiteBackward, self.bhlBackward)
 
-		vsizer.AddSpacer((10, 50))
+		vsizer.AddSpacer(50)
 
 		self.bReset = wx.BitmapButton(self, wx.ID_ANY, self.images.pngReset, size=BUTTONDIM)
-		self.bReset.SetToolTipString("Reset View")
+		self.bReset.SetToolTip("Reset View")
 		vsizer.Add(self.bReset)
 		self.Bind(wx.EVT_BUTTON, self.bResetPressed, self.bReset)
 		
 		
-		vsizer.AddSpacer((10, 10))
+		vsizer.AddSpacer(10)
 		
 		sizer.Add(vsizer)
-		sizer.AddSpacer((10, 10))
+		sizer.AddSpacer(10)
 		
 		self.SetSizer(sizer)
 		self.Layout()
 		self.Fit();
 		
 		self.render()
+		
+	def keyDown(self, evt):
+		print("key down")
+		evt.Skip()
+		
+	def keyUp(self, evt):
+		print("key up")
+		
+	def keyChar(self, evt):
+		print("key char: (", evt.GetKeyCode(), ")")
 		
 	def updateFileName(self, fn):
 		self.fileName = fn
@@ -801,7 +815,7 @@ class MainFrame(wx.Frame):
 			defaultDir=self.settings.boxDirectory, 
 			defaultFile="",
 			wildcard=wildcardLoad,
-			style=wx.OPEN
+			style=wx.FD_OPEN
 			)
 		path = None
 		if dlg.ShowModal() == wx.ID_OK:
@@ -876,7 +890,7 @@ class MainFrame(wx.Frame):
 
 		dlg = wx.FileDialog(
 			self, message="Save file as ...", defaultDir=self.settings.boxDirectory, 
-			defaultFile="", wildcard=wildcardSave, style=wx.SAVE + wx.FD_OVERWRITE_PROMPT
+			defaultFile="", wildcard=wildcardSave, style=wx.FD_SAVE + wx.FD_OVERWRITE_PROMPT
 			)
 		path = None
 		if dlg.ShowModal() == wx.ID_OK:

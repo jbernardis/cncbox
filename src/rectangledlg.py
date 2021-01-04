@@ -14,63 +14,63 @@ class RectangleDlg(wx.Dialog):
 		self.SetBackgroundColour("white")
 		
 		dsizer = wx.BoxSizer(wx.HORIZONTAL)
-		dsizer.AddSpacer((10, 10))
+		dsizer.AddSpacer(10)
 		
 		self.images = images
 		self.modified = False
 
 		leftsizer = wx.BoxSizer(wx.VERTICAL)
-		leftsizer.AddSpacer((10, 10))
+		leftsizer.AddSpacer(10)
 		
 		self.lbRects = RectanglesCtrl(self, self.rects, self.images)
 		leftsizer.Add(self.lbRects);
-		leftsizer.AddSpacer((10, 10))
+		leftsizer.AddSpacer(10)
 
 		btnsizer = wx.BoxSizer(wx.HORIZONTAL)		
-		btnsizer.AddSpacer((5,5))
+		btnsizer.AddSpacer(5)
 
 		self.bOk = wx.BitmapButton(self, wx.ID_ANY, self.images.pngOk, size=BUTTONDIM)
-		self.bOk.SetToolTipString("Dismiss dialog and save")
+		self.bOk.SetToolTip("Dismiss dialog and save")
 		btnsizer.Add(self.bOk)
 		self.Bind(wx.EVT_BUTTON, self.doOk, self.bOk)
-		btnsizer.AddSpacer((5,5))
+		btnsizer.AddSpacer(5)
 
 		self.bCancel = wx.BitmapButton(self, wx.ID_ANY, self.images.pngCancel, size=BUTTONDIM)
-		self.bCancel.SetToolTipString("Dismiss dialog losing changes")
+		self.bCancel.SetToolTip("Dismiss dialog losing changes")
 		btnsizer.Add(self.bCancel)
 		self.Bind(wx.EVT_BUTTON, self.doCancel, self.bCancel)
-		btnsizer.AddSpacer((5,5))
+		btnsizer.AddSpacer(5)
 
 		leftsizer.Add(btnsizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 5)
 		
 		dsizer.Add(leftsizer)
-		dsizer.AddSpacer((10,10))
+		dsizer.AddSpacer(10)
 		
 		rightsizer = wx.BoxSizer(wx.VERTICAL)
-		rightsizer.AddSpacer((10, 20))
+		rightsizer.AddSpacer(20)
 
 		self.bAdd = wx.BitmapButton(self, wx.ID_ANY, self.images.pngAdd, size=BUTTONDIM)
-		self.bAdd.SetToolTipString("Add a new rectangle")
+		self.bAdd.SetToolTip("Add a new rectangle")
 		rightsizer.Add(self.bAdd)
 		self.Bind(wx.EVT_BUTTON, self.doAdd, self.bAdd)
-		rightsizer.AddSpacer((5,5))
+		rightsizer.AddSpacer(5)
 
 		self.bEdit = wx.BitmapButton(self, wx.ID_ANY, self.images.pngEdit, size=BUTTONDIM)
-		self.bEdit.SetToolTipString("Modify current rectangle")
+		self.bEdit.SetToolTip("Modify current rectangle")
 		rightsizer.Add(self.bEdit)
 		self.Bind(wx.EVT_BUTTON, self.doEdit, self.bEdit)
 		self.bEdit.Enable(False)
-		rightsizer.AddSpacer((5,5))
+		rightsizer.AddSpacer(5)
 
 		self.bDelete = wx.BitmapButton(self, wx.ID_ANY, self.images.pngDel, size=BUTTONDIM)
-		self.bDelete.SetToolTipString("Delete current rectangle")
+		self.bDelete.SetToolTip("Delete current rectangle")
 		rightsizer.Add(self.bDelete)
 		self.Bind(wx.EVT_BUTTON, self.doDelete, self.bDelete)
 		self.bDelete.Enable(False)
-		rightsizer.AddSpacer((5,5))
+		rightsizer.AddSpacer(5)
 
 		dsizer.Add(rightsizer)
-		dsizer.AddSpacer((10,10))
+		dsizer.AddSpacer(10)
 		
 		self.SetSizer(dsizer)  
 		dsizer.Fit(self)
@@ -239,7 +239,7 @@ class SingleRectangleDlg(wx.Dialog):
 		self.SetBackgroundColour("white")
 		
 		dlgsizer = wx.BoxSizer(wx.VERTICAL)
-		dlgsizer.AddSpacer((20, 20))
+		dlgsizer.AddSpacer(20)
 		
 		self.cx = cx;
 		self.cy = cy;
@@ -256,15 +256,15 @@ class SingleRectangleDlg(wx.Dialog):
 		tcy.Bind(wx.EVT_KILL_FOCUS, self.onTextY)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
-		hb.AddSpacer((30, 10))
+		hb.AddSpacer(30)
 		hb.Add(t)
 		hb.Add(tcx)
-		hb.AddSpacer((5,5))
+		hb.AddSpacer(5)
 		hb.Add(tcy)
-		hb.AddSpacer((20, 20))
+		hb.AddSpacer(20)
 		
 		dlgsizer.Add(hb)
-		dlgsizer.AddSpacer((20, 20))
+		dlgsizer.AddSpacer(20)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Width: ", size=(100, -1))
 		tclx = wx.TextCtrl(self, wx.ID_ANY, DIMFORMAT % self.lx, size=(70, -1), style=wx.TE_RIGHT)
@@ -273,13 +273,13 @@ class SingleRectangleDlg(wx.Dialog):
 		tclx.Bind(wx.EVT_KILL_FOCUS, self.onTextLx)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
-		hb.AddSpacer((30, 10))
+		hb.AddSpacer(30)
 		hb.Add(t)
 		hb.Add(tclx)
-		hb.AddSpacer((5,5))
+		hb.AddSpacer(5)
 		
 		dlgsizer.Add(hb)
-		dlgsizer.AddSpacer((10, 10))
+		dlgsizer.AddSpacer(10)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Height: ", size=(100, -1))
 		tcly = wx.TextCtrl(self, wx.ID_ANY, DIMFORMAT % self.ly, size=(70, -1), style=wx.TE_RIGHT)
@@ -288,31 +288,31 @@ class SingleRectangleDlg(wx.Dialog):
 		tcly.Bind(wx.EVT_KILL_FOCUS, self.onTextLy)
 		
 		hb = wx.BoxSizer(wx.HORIZONTAL)
-		hb.AddSpacer((30, 10))
+		hb.AddSpacer(30)
 		hb.Add(t)
 		hb.Add(tcly)
-		hb.AddSpacer((5,5))
+		hb.AddSpacer(5)
 		
 		dlgsizer.Add(hb)
-		dlgsizer.AddSpacer((10, 10))
+		dlgsizer.AddSpacer(10)
 		
 		btnsizer = wx.BoxSizer(wx.HORIZONTAL)		
-		btnsizer.AddSpacer((5,5))
+		btnsizer.AddSpacer(5)
 
 		self.bOk = wx.BitmapButton(self, wx.ID_ANY, self.images.pngOk, size=BUTTONDIM)
-		self.bOk.SetToolTipString("Dismiss dialog and save")
+		self.bOk.SetToolTip("Dismiss dialog and save")
 		btnsizer.Add(self.bOk)
 		self.Bind(wx.EVT_BUTTON, self.doOk, self.bOk)
-		btnsizer.AddSpacer((5,5))
+		btnsizer.AddSpacer(5)
 
 		self.bCancel = wx.BitmapButton(self, wx.ID_ANY, self.images.pngCancel, size=BUTTONDIM)
-		self.bCancel.SetToolTipString("Dismiss dialog losing changes")
+		self.bCancel.SetToolTip("Dismiss dialog losing changes")
 		btnsizer.Add(self.bCancel)
 		self.Bind(wx.EVT_BUTTON, self.doCancel, self.bCancel)
-		btnsizer.AddSpacer((5,5))
+		btnsizer.AddSpacer(5)
 		
 		dlgsizer.Add(btnsizer, 1, wx.LEFT, 50)
-		dlgsizer.AddSpacer((10, 10))
+		dlgsizer.AddSpacer(10)
 		
 		self.SetSizer(dlgsizer)
 		self.Layout()

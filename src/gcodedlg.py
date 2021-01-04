@@ -33,17 +33,17 @@ class GCodeDlg(wx.Dialog):
 		self.images = images
 		
 		dsizer = wx.BoxSizer(wx.VERTICAL)
-		dsizer.AddSpacer((10, 10))
+		dsizer.AddSpacer(10)
 		
 		hsizer = wx.BoxSizer(wx.HORIZONTAL)
-		hsizer.AddSpacer((20, 20))
+		hsizer.AddSpacer(20)
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
 		
 		sbox = wx.StaticBox(self, -1, "Choose face")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
 
-		staticboxsizer.AddSpacer((130,10))
+		staticboxsizer.AddSpacer(10)
 		self.rbTop = wx.RadioButton(self, wx.ID_ANY, " Top ", style = wx.RB_GROUP )
 		self.rbBottom = wx.RadioButton(self, wx.ID_ANY, " Bottom " )
 		self.rbLeft = wx.RadioButton(self, wx.ID_ANY, " Left " )
@@ -51,21 +51,21 @@ class GCodeDlg(wx.Dialog):
 		self.rbFront = wx.RadioButton(self, wx.ID_ANY, " Front " )
 		self.rbBack = wx.RadioButton(self, wx.ID_ANY, " Back " )
 		staticboxsizer.Add(self.rbTop, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbBottom, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbLeft, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbRight, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbFront, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbBack, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		self.rbTop.SetValue(True)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Depth per Cut: ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, DEPTHFORMAT % self.depthPerCut, size=(70, -1), style=wx.TE_RIGHT)
@@ -77,7 +77,7 @@ class GCodeDlg(wx.Dialog):
 		hb.Add(t, 1, wx.TOP, 5)
 		hb.Add(tc)
 		vsizer.Add(hb)
-		vsizer.AddSpacer((5, 5))
+		vsizer.AddSpacer(5)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Extra Depth: ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, DEPTHFORMAT % self.extraDepth, size=(70, -1), style=wx.TE_RIGHT)
@@ -89,7 +89,7 @@ class GCodeDlg(wx.Dialog):
 		hb.Add(t, 1, wx.TOP, 5)
 		hb.Add(tc)
 		vsizer.Add(hb)
-		vsizer.AddSpacer((5, 5))
+		vsizer.AddSpacer(5)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Safe Z Height: ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, DEPTHFORMAT % self.safeZ, size=(70, -1), style=wx.TE_RIGHT)
@@ -101,7 +101,7 @@ class GCodeDlg(wx.Dialog):
 		hb.Add(t, 1, wx.TOP, 5)
 		hb.Add(tc)
 		vsizer.Add(hb)
-		vsizer.AddSpacer((5, 5))
+		vsizer.AddSpacer(5)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Digits/Accuracy: ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, INTFORMAT % self.sigDigits, size=(70, -1), style=wx.TE_RIGHT)
@@ -113,86 +113,86 @@ class GCodeDlg(wx.Dialog):
 		hb.Add(t, 1, wx.TOP, 5)
 		hb.Add(tc)
 		vsizer.Add(hb)
-		vsizer.AddSpacer((5, 5))
+		vsizer.AddSpacer(5)
 		
 		hsizer.Add(vsizer)
-		hsizer.AddSpacer((20, 20))
+		hsizer.AddSpacer(20)
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
 		
 		sbox = wx.StaticBox(self, -1, "Cut direction - inside cuts")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
 
-		staticboxsizer.AddSpacer((140,10))
+		staticboxsizer.AddSpacer(10)
 		self.rbICW = wx.RadioButton(self, wx.ID_ANY, " Clockwise ", style = wx.RB_GROUP )
 		self.rbICCW = wx.RadioButton(self, wx.ID_ANY, " Counter Clockwise " )
 		staticboxsizer.Add(self.rbICW, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbICCW, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		self.rbICW.SetValue(True)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		
 		sbox = wx.StaticBox(self, -1, "Cut direction - outside cuts")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
 
-		staticboxsizer.AddSpacer((140,10))
+		staticboxsizer.AddSpacer(10)
 		self.rbOCW = wx.RadioButton(self, wx.ID_ANY, " Clockwise ", style = wx.RB_GROUP )
 		self.rbOCCW = wx.RadioButton(self, wx.ID_ANY, " Counter Clockwise " )
 		staticboxsizer.Add(self.rbOCW, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbOCCW, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		self.rbOCCW.SetValue(True)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 
 		sbox = wx.StaticBox(self, -1, "Origin")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
 
-		staticboxsizer.AddSpacer((140,10))
+		staticboxsizer.AddSpacer(10)
 		self.rbUL = wx.RadioButton(self, wx.ID_ANY, " Upper Left ", style = wx.RB_GROUP )
 		self.rbUR = wx.RadioButton(self, wx.ID_ANY, " Upper Right " )
 		self.rbCTR = wx.RadioButton(self, wx.ID_ANY, " Center " )
 		self.rbLL = wx.RadioButton(self, wx.ID_ANY, " Lower Left " )
 		self.rbLR = wx.RadioButton(self, wx.ID_ANY, " Lower Right " )
 		staticboxsizer.Add(self.rbUL, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbUR, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbCTR, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbLL, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbLR, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		self.rbCTR.SetValue(True)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 
 		hsizer.Add(vsizer)
-		hsizer.AddSpacer((20, 20))
+		hsizer.AddSpacer(20)
 		
 		vsizer = wx.BoxSizer(wx.VERTICAL)
 		
 		sbox = wx.StaticBox(self, -1, "Measurement System")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
 
-		staticboxsizer.AddSpacer((140,10))
+		staticboxsizer.AddSpacer(10)
 		self.rbMetric = wx.RadioButton(self, wx.ID_ANY, " Metric ", style = wx.RB_GROUP )
 		self.rbImperial = wx.RadioButton(self, wx.ID_ANY, " Imperial " )
 		staticboxsizer.Add(self.rbMetric, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		staticboxsizer.Add(self.rbImperial, 1, wx.LEFT, 10)
-		staticboxsizer.AddSpacer((10, 10))
+		staticboxsizer.AddSpacer(10)
 		self.rbMetric.SetValue(True)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		
 		sbox = wx.StaticBox(self, -1, "Feed Rates")
 		staticboxsizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
@@ -207,7 +207,7 @@ class GCodeDlg(wx.Dialog):
 		hb.Add(t, 1, wx.TOP+wx.LEFT, 5)
 		hb.Add(tc)
 		staticboxsizer.Add(hb)
-		staticboxsizer.AddSpacer((5, 5))
+		staticboxsizer.AddSpacer(5)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Z (G0): ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, RATEFORMAT % self.feedG0Z, size=(70, -1), style=wx.TE_RIGHT)
@@ -219,7 +219,7 @@ class GCodeDlg(wx.Dialog):
 		hb.Add(t, 1, wx.TOP+wx.LEFT, 5)
 		hb.Add(tc)
 		staticboxsizer.Add(hb)
-		staticboxsizer.AddSpacer((5, 5))
+		staticboxsizer.AddSpacer(5)
 
 		t = wx.StaticText(self, wx.ID_ANY, "XY (G1): ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, RATEFORMAT % self.feedG1XY, size=(70, -1), style=wx.TE_RIGHT)
@@ -231,7 +231,7 @@ class GCodeDlg(wx.Dialog):
 		hb.Add(t, 1, wx.TOP+wx.LEFT, 5)
 		hb.Add(tc)
 		staticboxsizer.Add(hb)
-		staticboxsizer.AddSpacer((5, 5))
+		staticboxsizer.AddSpacer(5)
 		
 		t = wx.StaticText(self, wx.ID_ANY, "Z (G1): ", size=(80, -1))
 		tc = wx.TextCtrl(self, wx.ID_ANY, RATEFORMAT % self.feedG1Z, size=(70, -1), style=wx.TE_RIGHT)
@@ -243,39 +243,39 @@ class GCodeDlg(wx.Dialog):
 		hb.Add(t, 1, wx.TOP+wx.LEFT, 5)
 		hb.Add(tc)
 		staticboxsizer.Add(hb)
-		staticboxsizer.AddSpacer((5, 15))
+		staticboxsizer.AddSpacer(15)
 		
 		self.cbFeed = wx.CheckBox(self, wx.ID_ANY, "Add Rates to GCode")
 		self.Bind(wx.EVT_CHECKBOX, self.onCbFeed, self.cbFeed)
 		self.cbFeed.SetValue(True)
 		
 		staticboxsizer.Add(self.cbFeed, 1, wx.LEFT, 20)
-		staticboxsizer.AddSpacer((5, 5))
+		staticboxsizer.AddSpacer(5)
 		
 		vsizer.Add(staticboxsizer)
-		vsizer.AddSpacer((20, 20))
+		vsizer.AddSpacer(20)
 		
 		hsizer.Add(vsizer)
-		hsizer.AddSpacer((20, 20))
+		hsizer.AddSpacer(20)
 		
 		dsizer.Add(hsizer)
-		dsizer.AddSpacer((20, 20))
+		dsizer.AddSpacer(20)
 
 		btnsizer = wx.BoxSizer(wx.HORIZONTAL)		
 
 		self.bGCode = wx.BitmapButton(self, wx.ID_ANY, self.images.pngGcode, size=BUTTONDIM)
-		self.bGCode.SetToolTipString("Generate G Code")
+		self.bGCode.SetToolTip("Generate G Code")
 		btnsizer.Add(self.bGCode, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.doGCode, self.bGCode)
 
 		self.bExit = wx.BitmapButton(self, wx.ID_ANY, self.images.pngExit, size=BUTTONDIM)
-		self.bExit.SetToolTipString("Dismiss dialog")
+		self.bExit.SetToolTip("Dismiss dialog")
 		btnsizer.Add(self.bExit, 1, wx.LEFT + wx.RIGHT, BTNSPACING)
 		self.Bind(wx.EVT_BUTTON, self.doExit, self.bExit)
 
 		dsizer.Add(btnsizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 5)
 		
-		dsizer.AddSpacer((10,10))
+		dsizer.AddSpacer(10)
 		
 		self.SetSizer(dsizer)  
 		dsizer.Fit(self)
@@ -462,11 +462,11 @@ class GCodeDlg(wx.Dialog):
 		steps = []
 		d = self.depthPerCut
 		while totalDepth - d > 0.0001: 
-			print "appending for depth ", -d
+			print("appending for depth %f" % -d)
 			steps.append(-d)
 			d += self.depthPerCut
 		steps.append(-(totalDepth + self.extraDepth))
-		print "append final depth ", -(totalDepth + self.extraDepth)
+		print("append final depth %f" % -(totalDepth + self.extraDepth))
 		
 		if icw:
 			cmd = "G2"
@@ -521,7 +521,7 @@ class GCodeDlg(wx.Dialog):
 		gcode.append(("G0 X" + self.fmt + " Y" + self.fmt + self.addSpeedTerm("G0XY")) 
 					% (self.normalX(data[0][0]), self.normalY(data[0][1])))
 		
-		for i in len(steps):
+		for i in range(len(steps)):
 			p = steps[i]
 			gcode.append(("; layer at depth "+DEPTHFORMAT) % p)
 			pts = self.bx.render(ft, self.toolrad, i >= (len(steps)-2))[0]
@@ -543,7 +543,7 @@ class GCodeDlg(wx.Dialog):
 
 		dlg = wx.FileDialog(
 			self, message="Save file as ...", defaultDir=self.settings.gcodeDirectory, 
-			defaultFile="", wildcard=wildcardSave, style=wx.SAVE + wx.FD_OVERWRITE_PROMPT
+			defaultFile="", wildcard=wildcardSave, style=wx.FD_SAVE + wx.FD_OVERWRITE_PROMPT
 			)
 		path = None
 		if dlg.ShowModal() == wx.ID_OK:

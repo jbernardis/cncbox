@@ -34,9 +34,9 @@ class GcFrame (wx.Window):
 		self.hiLite = 0
 		self.pathOnly = False;
 		
-		sz = [x * self.scale + 2*self.shiftX for x in self.buildarea]
+		self.sz = [x * self.scale + 2*self.shiftX for x in self.buildarea]
 		
-		wx.Window.__init__(self, parent, size=sz)
+		wx.Window.__init__(self, parent, size=self.sz)
 				
 		self.initBuffer()
 		self.Bind(wx.EVT_SIZE, self.onSize)
@@ -53,7 +53,7 @@ class GcFrame (wx.Window):
 		dc = wx.BufferedPaintDC(self, self.buffer)
 		
 	def onLeftDown(self, evt):
-		self.startPos = evt.GetPositionTuple()
+		self.startPos = evt.GetPosition()
 		self.startOffset = (self.offsetx, self.offsety)
 		self.CaptureMouse()
 		self.SetFocus()
@@ -64,7 +64,7 @@ class GcFrame (wx.Window):
 			
 	def onMotion(self, evt):
 		if evt.Dragging() and evt.LeftIsDown():
-			x, y = evt.GetPositionTuple()
+			x, y = evt.GetPosition()
 			dx = x - self.startPos[0]
 			dy = y - self.startPos[1]
 			self.offsetx = self.startOffset[0] - dx/(2*self.zoom)
@@ -112,8 +112,9 @@ class GcFrame (wx.Window):
 		self.redrawGraph()
 		
 	def initBuffer(self):
-		w, h = self.GetClientSize();
-		self.buffer = wx.EmptyBitmap(w, h)
+		w, h = self.GetClientSize()
+		print(w, h)
+		self.buffer = wx.Bitmap(self.sz[0], self.sz[1])
 		self.redrawGraph()
 		
 	def setData(self, p, c, r, trad, hlseg):
